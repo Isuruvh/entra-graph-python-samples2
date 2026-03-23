@@ -1,0 +1,40 @@
+{
+    // Hide heavy folders from the Explorer
+    "files.exclude": {
+        "**/.venv": true,
+        "**/__pycache__": true
+    },
+
+    // Exclude from search results
+    "search.exclude": {
+        "**/.venv": true,
+        "**/__pycache__": true
+    },
+
+    // Stop Pylance from indexing thousands of files
+    "python.analysis.exclude": [
+        ".venv",
+        "**/__pycache__"
+    ],
+
+    // Use your virtual environment automatically
+    "python.defaultInterpreterPath": ".venv/Scripts/python.exe",
+
+    // Format on save (clean code)
+    "editor.formatOnSave": true,
+
+    // Use Black if installed (optional)
+    "python.formatting.provider": "black",
+
+    // Disable linting noise unless you want it
+    "python.linting.enabled": false,
+
+    // Smooth terminal experience
+    "terminal.integrated.defaultProfile.windows": "PowerShell",
+
+    // Prevent VS Code from scanning large folders
+    "files.watcherExclude": {
+        "**/.venv/**": true,
+        "**/__pycache__/**": true
+    }
+}
