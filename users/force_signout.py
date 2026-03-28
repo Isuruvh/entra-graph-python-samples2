@@ -1,15 +1,15 @@
 import requests
-from config import GRAPH_BASE_URL, get_token
 
-def force_signout(user_id):
-    token = get_token()
-    url = f"{GRAPH_BASE_URL}/users/{user_id}/invalidateAllRefreshTokens"
-    headers = {"Authorization": f"Bearer {token}"}
+user_id = input("Enter User ID: ")
 
-    response = requests.post(url, headers=headers)
-    response.raise_for_status()
-    print("User forced to sign out successfully.")
+endpoint = f"https://graph.microsoft.com/v1.0/users/{user_id}/invalidateAllRefreshTokens"
 
-if __name__ == "__main__":
-    user_id = input("User ID: ")
-    force_signout(user_id)
+headers = {
+    "Authorization": f"Bearer {access_token}",
+    "Content-Type": "application/json"
+}
+
+response = requests.post(endpoint, headers=headers, json={})  # <-- REQUIRED
+
+print("Status Code:", response.status_code)
+print("Response:", response.text)
