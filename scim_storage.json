@@ -1,0 +1,15 @@
+{
+    "Users": [
+        {
+            "userName": "sarah.connor@isurutrader.onmicrosoft.com",
+            "name": {
+                "givenName": "Sarah",
+                "familyName": "Connor"
+            },
+            "active": true,
+            "department": "Security",
+            "title": "Threat Analyst",
+            "id": "cb3d6051-174c-4e32-b2e7-71f17361b0ec"
+        }
+    ]
+}

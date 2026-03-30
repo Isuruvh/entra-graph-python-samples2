@@ -70,6 +70,8 @@ def menu():
     print("------------------------------")
     print("[20] User Creation Wizard")
     print("------------------------------")
+    print("[30] Process Workday HR Feed")
+    print("------------------------------")
     print("[0] Exit")
     print("==============================")
 
@@ -226,6 +228,26 @@ def main():
             from user_wizard import user_creation_wizard
             summary = user_creation_wizard()
             pretty_print(summary)
+
+        elif choice == "30":
+            from hr.workday_feed import load_workday_feed
+            from hr.workday_events import detect_event
+            from hr.provision_new_hire import process_new_hire
+
+            feed = load_workday_feed()
+
+            for record in feed:
+                event = detect_event(record)
+
+                if event == "NewHire":
+                    summary = process_new_hire(record)
+                    pretty_print(summary)
+
+                elif event == "Update":
+                    from hr.provision_update import process_update
+                    entra_user = get_user(record["employeeId"])  # or lookup by UPN
+                    summary = process_update(record, entra_user)
+                    pretty_print(summary)
 
         # -------------------------
         # EXIT

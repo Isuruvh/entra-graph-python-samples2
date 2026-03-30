@@ -1,0 +1,35 @@
+[
+  {
+    "employeeId": "E1001",
+    "firstName": "Sarah",
+    "lastName": "Connor",
+    "department": "Security",
+    "jobTitle": "Threat Analyst",
+    "location": "Sydney",
+    "status": "Active",
+    "isNewHire": true,
+    "isUpdated": false
+  },
+  {
+    "employeeId": "E1002",
+    "firstName": "John",
+    "lastName": "Reese",
+    "department": "Operations",
+    "jobTitle": "Field Agent",
+    "location": "Melbourne",
+    "status": "Active",
+    "isNewHire": false,
+    "isUpdated": true
+  },
+  {
+    "employeeId": "E1003",
+    "firstName": "Miles",
+    "lastName": "Dyson",
+    "department": "R&D",
+    "jobTitle": "Engineer",
+    "location": "Sydney",
+    "status": "Terminated",
+    "isNewHire": false,
+    "isUpdated": false
+  }
+]
