@@ -4,3 +4,4 @@ __pycache__/
 *.log
 .env
 *.csv
+msgraph_sdk-1.55.0/

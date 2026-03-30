@@ -1,0 +1,11 @@
+{
+    "domain": "isurutrader.onmicrosoft.com",
+    "default_password_length": 16,
+    "default_force_password_reset": true,
+    "default_license_skus": ["AAD_PREMIUM_P1"],
+    "default_roles": ["Global Reader"],
+    "logging": {
+        "enabled": true,
+        "path": "logs/iam_audit.log"
+    }
+}
