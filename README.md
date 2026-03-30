@@ -87,17 +87,5 @@ iam-automation/
 └── README.md
 ```
 
-This structure reflects a **modular, enterprise‑grade IAM automation platform**, with clear separation of concerns and clean extensibility.
 
----
 
-If you want, I can also generate:
-
-- A **full README.md** (complete file)  
-- A **badges section** (Python version, license, etc.)  
-- A **“Getting Started”** section  
-- A **“Roadmap”** section  
-- A **“Screenshots / Demo GIF”** section  
-- A **“Why This Project Matters”** section for recruiters  
-
-Just tell me and I’ll craft it.
