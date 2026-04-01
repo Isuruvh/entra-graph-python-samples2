@@ -1,17 +1,3 @@
-Brilliant — let’s do all **five**, one by one, cleanly and professionally, exactly the way a senior cloud architect would document it.
-
-Here’s the roadmap we’ll follow:
-
-1️⃣ **README.md architecture section**  
-2️⃣ **Mermaid.js diagram for GitHub**  
-3️⃣ **PowerPoint‑style architecture diagram (text‑based)**  
-4️⃣ **Full end‑to‑end flow diagram (Joiner → Mover → Leaver)**  
-5️⃣ **Token flow diagram (ID token vs Access token vs Refresh token)**  
-
-I’ll deliver them **one at a time**, starting now.
-
----
-
 # ⭐ **1️⃣ README.md Architecture Section**
 
 Below is a polished, copy‑paste‑ready section for your GitHub README.  
