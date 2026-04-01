@@ -1,27 +1,20 @@
-# ⭐ **1️⃣ README.md Architecture Section**
-
-Below is a polished, copy‑paste‑ready section for your GitHub README.  
-It explains your IAM Automation Platform in a way that impresses recruiters, hiring managers, and senior engineers.
-
----
-
-## 📘 **Architecture Overview**
+# 📘 IAM Automation Platform — Architecture Overview
 
 The IAM Automation Platform is a modular, event‑driven system that integrates:
 
-- **Workday (HR events)**
-- **SCIM provisioning**
-- **Microsoft Graph (identity + M365)**
-- **Azure Resource Manager (ARM)**
-- **FastAPI backend**
-- **Streamlit Web UI**
-- **Entra ID authentication**
+- Workday (HR events)
+- SCIM provisioning
+- Microsoft Graph (identity + M365)
+- Azure Resource Manager (ARM)
+- FastAPI backend
+- Streamlit Web UI
+- Entra ID authentication
 
 The platform automates **Joiner–Mover–Leaver (JML)** lifecycle events and provides a secure, web‑based interface for identity operations.
 
 ---
 
-## 🧠 **High‑Level Architecture**
+# 🧠 High‑Level Architecture
 
 ```
 ┌──────────────────────────────────────────────────────────────┐
@@ -62,7 +55,7 @@ The platform automates **Joiner–Mover–Leaver (JML)** lifecycle events and pr
 
 ---
 
-## 🔐 **Authentication & Authorization**
+# 🔐 Authentication & Authorization
 
 The platform uses **Entra ID** for:
 
@@ -72,7 +65,7 @@ The platform uses **Entra ID** for:
 - Token issuance (Graph + ARM)
 - Role‑based access control (RBAC)
 
-Two token types are used:
+### **Token Types**
 
 | Token Type | Used For | API |
 |------------|----------|------|
@@ -81,9 +74,9 @@ Two token types are used:
 
 ---
 
-## 🔄 **Lifecycle Automation (JML)**
+# 🔄 Lifecycle Automation (JML)
 
-The orchestrator handles:
+The IAM Orchestrator handles:
 
 - **Joiner** → SCIM create → Graph sync → license + group assignment  
 - **Mover** → attribute updates → group/role re‑evaluation  
@@ -91,7 +84,7 @@ The orchestrator handles:
 
 ---
 
-## 🧩 **Technology Stack**
+# 🧩 Technology Stack
 
 | Layer | Technology |
 |-------|------------|
@@ -106,7 +99,7 @@ The orchestrator handles:
 
 ---
 
-## 🚀 **Key Features**
+# 🚀 Key Features
 
 - Automated provisioning (Workday → SCIM → Entra ID)
 - Graph‑based identity automation
@@ -116,200 +109,152 @@ The orchestrator handles:
 - Admin tools for identity operations
 - Modular, extensible architecture
 
-```mermaid
-flowchart TB
+---
 
-A[Streamlit Web UI - User Login, Forms, Admin Tools]
-B[Entra ID - OIDC Login, MFA, Conditional Access]
-C[FastAPI Backend - HR, SCIM, Graph Endpoints]
-D[IAM Orchestrator - Workday to SCIM to Graph, Licenses, Groups, Disable]
-E[Microsoft Graph API - Identity and M365 Control Plane]
-F[Azure Resource Manager - Azure Infrastructure Control Plane]
-G[SCIM Provisioning - Workday to Entra ID]
-H[Azure Resources - VMs, Storage, VNets, Key Vault]
+# 🧩 JML Lifecycle Flow
 
-A -->|OIDC Login| B
-A -->|REST Calls| C
-C --> D
+## **JOINER (New Hire)**
 
-D -->|Graph Token| E
-D -->|ARM Token| F
-D -->|SCIM Calls| G
+1. Workday Event: *Hire* or *Pre‑Hire*  
+2. Workday sends SCIM → Entra ID (user created in provisioning state)  
+3. IAM Orchestrator receives event via `/hr/new-hire`  
+4. Orchestrator performs:  
+   - SCIM Create (if needed)  
+   - Graph user creation (if SCIM not authoritative)  
+   - Attribute population (title, department, manager)  
+   - Group assignment (dynamic + static)  
+   - License assignment (M365, Teams, SharePoint, Intune)  
+   - Role assignment  
+5. Notifications / logging  
+6. User becomes Active in Entra ID  
+7. User signs in (MFA + Conditional Access)  
 
-F --> H
-```
-────────────────────────────────────────────────────────────────────────────
-                     JOINER → MOVER → LEAVER (JML) LIFECYCLE
-────────────────────────────────────────────────────────────────────────────
+---
 
-JOINER (New Hire)
-────────────────────────────────────────────────────────────────────────────
-1. Workday Event: "Hire" or "Pre-Hire"
-2. Workday sends SCIM → Entra ID (User Created in Provisioning State)
-3. IAM Orchestrator receives event via FastAPI /hr/new-hire
-4. Orchestrator performs:
-      - SCIM Create (if needed)
-      - Graph User Create (if SCIM not authoritative)
-      - Attribute population (job title, department, manager)
-      - Group assignment (dynamic + static)
-      - License assignment (M365, Teams, SharePoint, Intune)
-      - Role assignment (if applicable)
-5. Notifications / Logging
-6. User becomes Active in Entra ID
-7. User signs in via Entra ID (MFA + Conditional Access)
-────────────────────────────────────────────────────────────────────────────
+## **MOVER (Update)**
 
+1. Workday Event: *Job Change*, *Department Change*, *Manager Change*  
+2. Workday sends SCIM → Entra ID (user updated)  
+3. IAM Orchestrator receives event via `/hr/update`  
+4. Orchestrator performs:  
+   - Attribute updates  
+   - Group re‑evaluation  
+   - License re‑evaluation  
+   - Role re‑evaluation  
+   - Manager‑based access updates  
+5. Notifications / logging  
+6. User continues with updated access  
 
-MOVER (Update)
-────────────────────────────────────────────────────────────────────────────
-1. Workday Event: "Job Change", "Department Change", "Manager Change"
-2. Workday sends SCIM → Entra ID (User Updated)
-3. IAM Orchestrator receives event via FastAPI /hr/update
-4. Orchestrator performs:
-      - Attribute updates (title, department, location)
-      - Group re-evaluation (add/remove)
-      - License re-evaluation (add/remove)
-      - Role re-evaluation (add/remove)
-      - Manager-based access updates
-5. Notifications / Logging
-6. User continues with updated access
-────────────────────────────────────────────────────────────────────────────
+---
 
+## **LEAVER (Termination)**
 
-LEAVER (Termination)
-────────────────────────────────────────────────────────────────────────────
-1. Workday Event: "Termination" or "End Employment"
-2. Workday sends SCIM → Entra ID (User Disabled in Provisioning)
-3. IAM Orchestrator receives event via FastAPI /hr/termination
-4. Orchestrator performs:
-      - Disable account in Entra ID
-      - Remove all licenses
-      - Remove all group memberships
-      - Remove all roles
-      - Reset password / block sign-in
-      - Move mailbox to inactive state (optional)
-      - Archive OneDrive / SharePoint (optional)
-      - Notify manager / HR (optional)
-5. Notifications / Logging
-6. User becomes Disabled / Deleted (based on retention policy)
-────────────────────────────────────────────────────────────────────────────
+1. Workday Event: *Termination* or *End Employment*  
+2. Workday sends SCIM → Entra ID (user disabled in provisioning)  
+3. IAM Orchestrator receives event via `/hr/termination`  
+4. Orchestrator performs:  
+   - Disable account in Entra ID  
+   - Remove all licenses  
+   - Remove all group memberships  
+   - Remove all roles  
+   - Reset password / block sign‑in  
+   - Archive mailbox / OneDrive (optional)  
+   - Notify manager / HR (optional)  
+5. Notifications / logging  
+6. User becomes Disabled / Deleted (based on retention policy)  
 
+---
 
-SUPPORTING SYSTEMS
-────────────────────────────────────────────────────────────────────────────
-- Streamlit Web UI (manual overrides, admin tools)
-- FastAPI Backend (API gateway)
-- IAM Orchestrator (business logic)
-- Microsoft Graph (identity + M365)
-- SCIM (Workday → Entra ID provisioning)
-- Azure ARM (optional infra automation)
-- Entra ID (authentication, MFA, CA)
-────────────────────────────────────────────────────────────────────────────
-────────────────────────────────────────────────────────────────────────────
-                         TOKEN FLOW ARCHITECTURE
-────────────────────────────────────────────────────────────────────────────
+# 🧩 Supporting Systems
 
-USER → STREAMLIT UI LOGIN
-────────────────────────────────────────────────────────────────────────────
-1. User opens Streamlit Web UI
-2. Streamlit redirects user to Entra ID (OIDC Authorization Code Flow)
-3. User completes:
-      - Password
-      - MFA (if required)
-      - Conditional Access evaluation
-4. Entra ID returns:
-      - ID Token (identity of user)
-      - Authorization Code (short-lived)
-5. Streamlit exchanges Authorization Code for:
-      - ID Token (for UI session)
-      - Access Token (optional, if calling backend directly)
-      - Refresh Token (optional, depending on config)
-────────────────────────────────────────────────────────────────────────────
+- Streamlit Web UI (manual overrides, admin tools)  
+- FastAPI Backend (API gateway)  
+- IAM Orchestrator (business logic)  
+- Microsoft Graph (identity + M365)  
+- SCIM (Workday → Entra ID provisioning)  
+- Azure ARM (optional infra automation)  
+- Entra ID (authentication, MFA, CA)  
 
+---
 
-STREAMLIT → FASTAPI BACKEND
-────────────────────────────────────────────────────────────────────────────
-6. Streamlit sends API requests to FastAPI
-      - Usually includes a session cookie or bearer token
-7. FastAPI validates the token (signature + issuer + audience)
-8. FastAPI does NOT use the user’s token to call Graph or ARM
-      - Instead, FastAPI uses its own service principal
-────────────────────────────────────────────────────────────────────────────
+# 🔐 Token Flow Architecture
 
+## **USER → STREAMLIT UI LOGIN**
 
-FASTAPI → ENTRA ID (MSAL)
-────────────────────────────────────────────────────────────────────────────
-9. FastAPI uses MSAL ConfidentialClientApplication to request:
+1. User opens Streamlit UI  
+2. Streamlit redirects to Entra ID (OIDC Authorization Code Flow)  
+3. User completes:  
+   - Password  
+   - MFA  
+   - Conditional Access  
+4. Entra ID returns:  
+   - **ID Token**  
+   - **Authorization Code**  
+5. Streamlit exchanges code for:  
+   - ID Token  
+   - Access Token (optional)  
+   - Refresh Token (optional)  
 
-   A. GRAPH ACCESS TOKEN
-      Scope: https://graph.microsoft.com/.default
-      Used for:
-        - Users
-        - Groups
-        - Roles
-        - Licenses
-        - M365 workloads
+---
 
-   B. ARM ACCESS TOKEN
-      Scope: https://management.azure.com/.default
-      Used for:
-        - Azure VMs
-        - Storage
-        - Networking
-        - Key Vault
-        - Resource Groups
+## **STREAMLIT → FASTAPI BACKEND**
 
-10. Entra ID returns:
-      - Access Token (Graph)
-      - Access Token (ARM)
-      - Refresh Token (for backend service principal)
-────────────────────────────────────────────────────────────────────────────
+6. Streamlit sends API requests to FastAPI  
+7. FastAPI validates the token  
+8. FastAPI does **not** use the user’s token for automation  
+   - It uses its **own service principal**  
 
+---
 
-FASTAPI → IAM ORCHESTRATOR
-────────────────────────────────────────────────────────────────────────────
-11. FastAPI passes tokens to the Orchestrator
-12. Orchestrator performs:
-      - SCIM provisioning
-      - Graph automation
-      - ARM automation (optional)
-────────────────────────────────────────────────────────────────────────────
+## **FASTAPI → ENTRA ID (MSAL)**
 
+9. FastAPI requests:
 
-IAM ORCHESTRATOR → GRAPH / ARM / SCIM
-────────────────────────────────────────────────────────────────────────────
-13. GRAPH TOKEN used for:
-      - Create user
-      - Update user
-      - Disable user
-      - Assign licenses
-      - Assign groups
-      - Assign roles
+### **A. Graph Access Token**  
+Scope: `https://graph.microsoft.com/.default`
 
-14. ARM TOKEN used for:
-      - Create Azure resources (optional)
-      - Assign Azure RBAC roles
-      - Manage Key Vault secrets
-      - Manage Storage accounts
+### **B. ARM Access Token**  
+Scope: `https://management.azure.com/.default`
 
-15. SCIM used for:
-      - Workday → Entra ID provisioning
-────────────────────────────────────────────────────────────────────────────
+10. Entra ID returns:  
+- Access Token (Graph)  
+- Access Token (ARM)  
+- Refresh Token (service principal)  
 
+---
 
-TOKEN TYPES SUMMARY
-────────────────────────────────────────────────────────────────────────────
-ID TOKEN
-- Used by Streamlit UI
-- Identifies the logged-in user
-- Not used for API calls to Graph or ARM
+## **IAM ORCHESTRATOR → GRAPH / ARM / SCIM**
 
-ACCESS TOKEN (GRAPH)
-- Used by backend to call Microsoft Graph
+### **Graph Token used for:**  
+- Create / update / disable user  
+- Assign licenses  
+- Assign groups  
+- Assign roles  
 
-ACCESS TOKEN (ARM)
-- Used by backend to call Azure Resource Manager
+### **ARM Token used for:**  
+- Azure resource automation  
+- RBAC assignments  
+- Key Vault operations  
+- Storage operations  
 
-REFRESH TOKEN
-- Used by backend service principal to silently renew tokens
-────────────────────────────────────────────────────────────────────────────
+### **SCIM used for:**  
+- Workday → Entra ID provisioning  
+
+---
+
+# 🔑 Token Types Summary
+
+### **ID Token**
+- Used by Streamlit UI  
+- Identifies the logged‑in user  
+
+### **Access Token (Graph)**
+- Used by backend to call Microsoft Graph  
+
+### **Access Token (ARM)**
+- Used by backend to call Azure Resource Manager  
+
+### **Refresh Token**
+- Used by backend service principal to silently renew tokens  
+
+---
