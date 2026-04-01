@@ -115,3 +115,45 @@ The orchestrator handles:
 - CSV bulk provisioning
 - Admin tools for identity operations
 - Modular, extensible architecture
+- flowchart TB
+
+%% Style
+classDef azure fill:#007FFF,stroke:#003F7F,color:white
+classDef graph fill:#2E8B57,stroke:#1E5B37,color:white
+classDef scim fill:#8A2BE2,stroke:#4B0082,color:white
+classDef ui fill:#1E90FF,stroke:#104E8B,color:white
+classDef backend fill:#FF8C00,stroke:#CD6600,color:white
+classDef entra fill:#6A5ACD,stroke:#483D8B,color:white
+
+%% User/UI Layer
+A[Streamlit Web UI<br>(User Login, Forms, Admin Tools)]:::ui
+
+%% Authentication
+B[Entra ID<br>(OIDC Login, MFA, Conditional Access)]:::entra
+
+%% Backend Layer
+C[FastAPI Backend<br>/hr /scim /graph Endpoints]:::backend
+
+%% Orchestrator
+D[IAM Orchestrator<br>Workday → SCIM → Graph<br>Licenses, Groups, Disable]:::backend
+
+%% Control Planes
+E[Microsoft Graph API<br>Identity + M365 Control Plane]:::graph
+F[Azure Resource Manager (ARM)<br>Azure Infrastructure Control Plane]:::azure
+
+%% SCIM
+G[SCIM Provisioning<br>Workday → Entra ID]:::scim
+
+%% Azure Resources
+H[Azure Resources<br>VMs, Storage, VNets, Key Vault]:::azure
+
+%% Connections
+A -->|OIDC Login| B
+A -->|REST Calls| C
+C --> D
+
+D -->|Graph Token| E
+D -->|ARM Token| F
+D -->|SCIM Calls| G
+
+F --> H
