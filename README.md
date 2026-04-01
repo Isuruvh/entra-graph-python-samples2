@@ -115,7 +115,8 @@ The orchestrator handles:
 - CSV bulk provisioning
 - Admin tools for identity operations
 - Modular, extensible architecture
-- flowchart TB
+- 
+flowchart TB
 
 %% Style
 classDef azure fill:#007FFF,stroke:#003F7F,color:white
