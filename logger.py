@@ -2,7 +2,13 @@
 
 import os
 import json
+import logging
 from datetime import datetime
+
+log = logging.getLogger("iam_orchestrator")
+if not log.handlers:
+    logging.basicConfig(level=logging.INFO, format="%(asctime)s [%(levelname)s] %(message)s")
+
 
 LOG_DIR = "logs"
 LOG_FILE = os.path.join(LOG_DIR, "iam_audit.log")
