@@ -115,7 +115,8 @@ The orchestrator handles:
 - CSV bulk provisioning
 - Admin tools for identity operations
 - Modular, extensible architecture
-- 
+
+```mermaid
 flowchart TB
 
 %% Style
@@ -158,3 +159,4 @@ D -->|ARM Token| F
 D -->|SCIM Calls| G
 
 F --> H
+```
