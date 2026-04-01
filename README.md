@@ -119,14 +119,14 @@ The orchestrator handles:
 ```mermaid
 flowchart TB
 
-A[Streamlit Web UI<br>(User Login, Forms, Admin Tools)]
-B[Entra ID<br>(OIDC Login, MFA, Conditional Access)]
-C[FastAPI Backend<br>/hr /scim /graph Endpoints]
-D[IAM Orchestrator<br>Workday → SCIM → Graph<br>Licenses, Groups, Disable]
-E[Microsoft Graph API<br>Identity + M365 Control Plane]
-F[Azure Resource Manager (ARM)<br>Azure Infrastructure Control Plane]
-G[SCIM Provisioning<br>Workday → Entra ID]
-H[Azure Resources<br>VMs, Storage, VNets, Key Vault]
+A[Streamlit Web UI - User Login, Forms, Admin Tools]
+B[Entra ID - OIDC Login, MFA, Conditional Access]
+C[FastAPI Backend - HR, SCIM, Graph Endpoints]
+D[IAM Orchestrator - Workday to SCIM to Graph, Licenses, Groups, Disable]
+E[Microsoft Graph API - Identity and M365 Control Plane]
+F[Azure Resource Manager - Azure Infrastructure Control Plane]
+G[SCIM Provisioning - Workday to Entra ID]
+H[Azure Resources - VMs, Storage, VNets, Key Vault]
 
 A -->|OIDC Login| B
 A -->|REST Calls| C
