@@ -1,3 +1,5 @@
+# auth.py
+
 import msal
 from config import TENANT_ID, CLIENT_ID, CLIENT_SECRET
 

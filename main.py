@@ -224,6 +224,7 @@ def main():
             user_id = input("User Object ID: ").strip()
             role_name = input("Role name (e.g., Global Reader): ").strip()
             pretty_print(remove_role(user_id, role_name))
+
         elif choice == "20":
             from user_wizard import user_creation_wizard
             summary = user_creation_wizard()
@@ -245,13 +246,9 @@ def main():
 
                 elif event == "Update":
                     from hr.provision_update import process_update
-                    entra_user = get_user(record["employeeId"])  # or lookup by UPN
+                    entra_user = get_user(record["employeeId"])
                     summary = process_update(record, entra_user)
                     pretty_print(summary)
-
-        # -------------------------
-        # EXIT
-        # -------------------------
 
         elif choice == "0":
             print("\nExiting IAM Automation Tool. Goodbye.")
